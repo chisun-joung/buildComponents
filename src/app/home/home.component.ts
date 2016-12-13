@@ -2,18 +2,29 @@
  * Created by chisunjoung on 2016. 12. 12..
  */
 
-import {Component} from "@angular/core";
+import {Component, ViewChild, ViewContainerRef, ComponentFactoryResolver} from "@angular/core";
 import {SimpleService} from "../services/services.module";
+import {WidgetThree} from "../widgets/widget-three.component";
 @Component({
   selector: 'home',
   template: `
-  <div>I'm a Home component</div>
-  <div>{{simpleService.message}}</div>
+  <div #container></div>
   
-  <widget-one [message]="simpleService.message"></widget-one>
-  <widget-one [message]="'Hello world'"></widget-one>
 `
 })
 export class HomeComponent{
-  constructor(private simpleService:SimpleService){}
+  constructor(
+    private resolver:ComponentFactoryResolver){}
+
+  @ViewChild('container', {read:ViewContainerRef}) container;
+
+  ngAfterContentInit(){
+    const widgetFactory = this.resolver.resolveComponentFactory(WidgetThree);
+    this.container.createComponent(widgetFactory);
+    this.container.createComponent(widgetFactory);
+    this.container.createComponent(widgetFactory);
+    this.container.createComponent(widgetFactory);
+    this.container.createComponent(widgetFactory);
+  }
+
 }
